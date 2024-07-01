@@ -35,8 +35,8 @@ class LogApp(toga.App):
         self.message_box = toga.Box(style=self.theme_manager.current_theme.message_style)
 
         self.login_box = self.setup_login_ui()
-        self.admin_box = toga.Box(style=self.theme_manager.current_theme.admin_box_style)
-        self.user_box = toga.Box(style=self.theme_manager.current_theme.user_box_style)
+        self.admin_box = toga.Box()
+        self.user_box = toga.Box()
 
         self.main_window.content = self.login_box
         self.main_window.show()
@@ -62,13 +62,21 @@ class LogApp(toga.App):
         if authenticate(username, password):
             self.current_user = username
             if is_admin(username):
-                setup_admin_ui(self.admin_box, self)
-                self.main_window.content = self.admin_box
+                self.setup_admin_ui()
             else:
-                setup_user_ui(self.user_box, self)
-                self.main_window.content = self.user_box
+                self.setup_user_ui()
         else:
             show_message("Invalid username or password", self)
+
+    def setup_admin_ui(self):
+        self.admin_box = toga.Box(style=self.theme_manager.current_theme.admin_box_style)
+        setup_admin_ui(self.admin_box, self)
+        self.main_window.content = self.admin_box
+
+    def setup_user_ui(self):
+        self.user_box = toga.Box(style=self.theme_manager.current_theme.user_box_style)
+        setup_user_ui(self.user_box, self)
+        self.main_window.content = self.user_box
 
     def refresh_ui(self):
         self.main_window.content.refresh()
@@ -82,16 +90,13 @@ class LogApp(toga.App):
         self.apply_theme()
 
     def apply_theme(self):
-        self.refresh_ui()
         self.message_box.style = self.theme_manager.current_theme.message_style
         if self.current_user is None:
             self.main_window.content = self.setup_login_ui()
         elif is_admin(self.current_user):
-            setup_admin_ui(self.admin_box, self)
-            self.main_window.content = self.admin_box
+            self.setup_admin_ui()
         else:
-            setup_user_ui(self.user_box, self)
-            self.main_window.content = self.user_box
+            self.setup_user_ui()
 
 def main():
     return LogApp()

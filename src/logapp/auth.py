@@ -99,8 +99,7 @@ def add_user(username, password, is_admin, app):
     add_user_to_db(username, password_hash, is_admin)
     if is_admin:
         show_message("You added a new Admin.", app)
-    else:
-        show_message("You added a new User.", app)
+        app.refresh_ui()
 
 def check_in(widget, app):
     username = app.current_user
