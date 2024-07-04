@@ -109,5 +109,5 @@ def close_connection():
     with get_connection() as conn:
         conn.close()
 
-        
+# Initialize the database tables if they don't exist
 initialize_database()
