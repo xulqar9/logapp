@@ -112,14 +112,16 @@ def close_connection():
     with get_connection() as conn:
         conn.close()
 
-def create_admin_user():
-    username = "admin"
-    password = "admin"
-    password_hash = hashlib.sha256(password.encode()).hexdigest()
-    is_admin = True
-    add_user_to_db(username, password_hash, is_admin)
+# COMMENT THIS FUNCTION OUT TO CREATE ADMIN USER FOR NEW DATABASE
 
-create_admin_user()
+#def create_admin_user():
+#    username = "admin"
+#    password = "admin"
+#    password_hash = hashlib.sha256(password.encode()).hexdigest()
+#    is_admin = True
+#    add_user_to_db(username, password_hash, is_admin)
+#
+#create_admin_user()
 
 # Initialize the database tables if they don't exist
 initialize_database()
